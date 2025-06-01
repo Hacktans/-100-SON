@@ -4,7 +4,7 @@ DEBUG_FLAGS = -g
 
 NAME = minishell
 
-SRC = minishell.c  utils.c ft_tokenize.c parsing.c ft_reader.c builtins.c
+SRC = minishell.c  utils.c ft_tokenize.c parsing.c ft_reader.c builtins.c quote_chk.c esc_seq.c
 OBJ = $(SRC:.c=.o)
 
 LIBFT_DIR = ./libft

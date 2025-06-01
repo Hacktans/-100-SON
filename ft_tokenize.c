@@ -26,18 +26,19 @@ void 	write_list(t_token *token)
 	t_token *tmp = token;
 	while(tmp)
 	{
-		printf("%s\n", tmp->type);
+		printf("Eleman : %s\n", tmp->value);
 		tmp = tmp->next;
 	}
 }
 
-
-int 	syntax_chk(t_token *tokens)
+int 	syntax_chk(t_token *tokens, char *input)
 {
 	t_token *tmp = tokens;
 	if(ft_strncmp(tmp->type,"pipe", 4) == 0)
 		return(0);
 	if(ft_strncmp(tmp->type,"rdr", 3) == 0)
+		return(0);
+	if(!ft_quote_chk(input))
 		return(0);
 	return(1);
 }
@@ -94,6 +95,24 @@ void ft_token(char *input, t_token **tokens)
 					if (input[i] == '\'')
 						i++;
 				}
+				else if(input[i] == '"')
+				{
+					i++;
+					while(input[i] && input[i] != '"')
+					{
+						word[len] = input[i];
+						len++;
+						i++;
+					}
+					if(input[i] == '"')
+						i++;
+				}
+				else if(input[i] == '\\' && char_is_esc(input[i + 1]))
+				{
+					word[len] = input[i + 1];
+					len++;
+					i += 2;
+				}
 				else
 				{
 					word[len] = input[i];
@@ -105,6 +124,7 @@ void ft_token(char *input, t_token **tokens)
 			add_token(tokens, word, "word");
 		}
 	}
+	write_list(*tokens);
 }
 
 void reset_tokens(t_token *tokens)

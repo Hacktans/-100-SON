@@ -21,7 +21,7 @@ int main(int ac, char **av, char **env)
         ft_exit_chk(mini, input);
         add_history(input);
         ft_token(input, &tokens);
-        if(!syntax_chk(tokens))
+        if(!syntax_chk(tokens, input))
         {
             printf("Syntax Error\n");
             reset_tokens(tokens);

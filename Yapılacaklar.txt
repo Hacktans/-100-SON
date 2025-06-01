@@ -1,0 +1,2 @@
+1 - Tırnak içinde kaçış sekansları farklı 
+2 - Dolar molar ekleme şekli 

@@ -50,6 +50,9 @@ void reset_tokens(t_token *tokens);
 t_cmd *ft_parsing(t_token *tokens , t_list *mini);
 void ft_builtins(t_list *mini, t_cmd *cmds, char **env);
 void    ft_cmds(t_list *mini, char **env, char **args);
-int 	syntax_chk(t_token *tokens);
+int 	syntax_chk(t_token *tokens, char *input);
+int		ft_quote_chk(char *inp);
+char	*esc_seq(char *inp);
+int char_is_esc(char c) ;
 
 #endif
