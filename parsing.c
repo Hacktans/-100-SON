@@ -1,15 +1,18 @@
 #include "minishell.h"
 
-int cmd_chk(char *cmd, char **paths) {
+int cmd_chk(char *cmd, char **paths) 
+{
 	if (!cmd || !paths) return 0;
 
 	int i = 0;
-	while (paths[i]) {
+	while (paths[i])
+	{
 		char *path = ft_strjoin(paths[i], "/");
 		char *full_path = ft_strjoin(path, cmd);
 		free(path);
 
-		if (access(full_path, X_OK) == 0) {
+		if (access(full_path, X_OK) == 0) 
+		{
 			free(full_path);
 			return 1;
 		}

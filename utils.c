@@ -42,6 +42,11 @@ void    ft_exit_chk(t_list *mini, char *input)
 
 void ft_builtins(t_list *mini, t_cmd *cmds, char **env)
 {
+    if (ft_strncmp(cmds->command[0], "echo", 4) == 0)
+    {
+        ft_echo(cmds->command);
+        return;
+    }
     if (ft_strncmp(cmds->command[0], "cd", 2) == 0)
     {
         ft_cd(cmds->command, mini);

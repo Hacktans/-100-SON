@@ -54,5 +54,6 @@ int 	syntax_chk(t_token *tokens, char *input);
 int		ft_quote_chk(char *inp);
 char	*esc_seq(char *inp);
 int char_is_esc(char c) ;
+void    ft_echo(char **strngs);
 
 #endif

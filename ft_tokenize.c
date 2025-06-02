@@ -86,7 +86,7 @@ void ft_token(char *input, t_token **tokens)
 				if (input[i] == '\'')
 				{
 					i++; 
-					while (input[i] && input[i] != '\'')  //tek tırnaklı argümanlar ve komutlar
+					while (input[i] && input[i] != '\'' && input[i] != '\\')  //tek tırnaklı argümanlar ve komutlar
 					{
 						word[len] = input[i];
 						len++;
@@ -98,7 +98,7 @@ void ft_token(char *input, t_token **tokens)
 				else if(input[i] == '"')
 				{
 					i++;
-					while(input[i] && input[i] != '"')
+					while(input[i] && input[i] != '"' && input[i] != '\\')
 					{
 						word[len] = input[i];
 						len++;
