@@ -84,6 +84,7 @@ t_cmd *ft_parsing(t_token *tokens, t_list *mini)
 		if (!cmd_chk(tokens->value, mini->paths) && flag == 0) 
 		{
 			printf("BÖYLE BİR KOMUT YOK\n");
+			exit_code = 127;
 			return(NULL);
 		}
 	}

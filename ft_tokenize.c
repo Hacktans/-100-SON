@@ -1,6 +1,6 @@
 #include "minishell.h"
 
-void    add_token(t_token **tokens, char *value, char *type)
+void    add_token(t_token **tokens, char *value, char *type, int quote)
 {
 	t_token *new_node;
 	t_token *tmp;
@@ -9,6 +9,7 @@ void    add_token(t_token **tokens, char *value, char *type)
 		return ;
 	new_node->type = ft_strdup(type);
 	new_node->value = ft_strdup(value);
+	new_node->quote_num = quote;
 	new_node->next = NULL;
 	if(*tokens == NULL)
 		*tokens = new_node;
@@ -26,7 +27,7 @@ void 	write_list(t_token *token)
 	t_token *tmp = token;
 	while(tmp)
 	{
-		printf("Eleman : %s\n", tmp->value);
+		printf("Eleman : %s\n Quote Num : %d\n", tmp->value, tmp->quote_num);
 		tmp = tmp->next;
 	}
 }
@@ -47,35 +48,37 @@ void ft_token(char *input, t_token **tokens)
 {
     int i = 0;
     int len = 0;
-    char word[1024];
+    char *word;
+	int quote = 0;
 
+	word = malloc(sizeof(char) * 100000);
 	while (input[i])
 	{
 		if (input[i] == ' ')
 			i++;
 		else if (input[i] == '>' && input[i + 1] == '>')
 		{
-			add_token(tokens, ">>", "rdr");
+			add_token(tokens, ">>", "rdr", 0);
 			i += 2;
 		}
 		else if (input[i] == '<' && input[i + 1] == '<') 
 		{
-			add_token(tokens, "<<", "rdr");
+			add_token(tokens, "<<", "rdr", 0);
 			i += 2;
 		}
 		else if (input[i] == '|')
 		{
-			add_token(tokens, "|", "pipe");
+			add_token(tokens, "|", "pipe", 0);
 			i++;
 		}
 		else if (input[i] == '>')
 		{
-			add_token(tokens, ">", "rdr");
+			add_token(tokens, ">", "rdr", 0);
 			i++;
 		}
 		else if (input[i] == '<')
 		{
-			add_token(tokens, "<", "rdr");
+			add_token(tokens, "<", "rdr", 0);
 			i++;
 		}
 		else
@@ -85,6 +88,7 @@ void ft_token(char *input, t_token **tokens)
 			{
 				if (input[i] == '\'')
 				{
+					quote = 1;
 					i++; 
 					while (input[i] && input[i] != '\'' && input[i] != '\\')  //tek tırnaklı argümanlar ve komutlar
 					{
@@ -97,6 +101,7 @@ void ft_token(char *input, t_token **tokens)
 				}
 				else if(input[i] == '"')
 				{
+					quote = 2;
 					i++;
 					while(input[i] && input[i] != '"' && input[i] != '\\')
 					{
@@ -121,7 +126,8 @@ void ft_token(char *input, t_token **tokens)
 				}
 			}
 			word[len] = '\0';
-			add_token(tokens, word, "word");
+			add_token(tokens, word, "word", quote);
+			quote = 0;
 		}
 	}
 	write_list(*tokens);

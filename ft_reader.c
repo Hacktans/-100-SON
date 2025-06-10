@@ -18,6 +18,7 @@ void    exec_cmds(char *full_path, char **args, char **env)
     {
         wait(NULL);
     }
+    exit_code = 0;
     free(full_path);
 }
 

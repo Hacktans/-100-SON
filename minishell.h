@@ -1,5 +1,7 @@
 #ifndef MINISHELL_H
 #define MINISHELL_H
+ 
+int exit_code;
 
 #include <unistd.h>
 #include <stdio.h>
@@ -24,6 +26,7 @@ typedef struct s_token
 {
     char *value;
     char *type;
+    int quote_num;
     struct s_token *next; 
 } t_token;
 

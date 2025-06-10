@@ -23,6 +23,7 @@ int main(int ac, char **av, char **env)
         ft_token(input, &tokens);
         if(!syntax_chk(tokens, input))
         {
+            exit_code = 258;
             printf("Syntax Error\n");
             reset_tokens(tokens);
             tokens = NULL;

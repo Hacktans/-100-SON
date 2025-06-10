@@ -1,4 +1,4 @@
 1 - Tırnak içinde kaçış sekansları farklı 👍
-2 - Dolar molar ekleme şekli 
-3 - Echo -n flagi eklencek
+2 - Dolar molar ekleme şekli --- in progress
+3 - Echo -n flagi eklencek 👍
 4 - Manuel echo implement edilcek 👍
