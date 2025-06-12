@@ -22,7 +22,8 @@ int cmd_chk(char *cmd, char **paths)
 	return 0;
 }
 
-void add_cmds(t_cmd *cmds, char *value, int index) {
+void add_cmds(t_cmd *cmds, char *value, int index) 
+{
 	if (!cmds || !value) return;
 	
 	char **new_command = malloc(sizeof(char *) * (index + 2));  // +2 (index+1 + NULL)
@@ -57,6 +58,7 @@ t_cmd *ft_parsing(t_token *tokens, t_list *mini)
 
 	t_cmd *cmds = ft_calloc(1, sizeof(t_cmd));
 	int pipe_c = 0, rdr_c = 0, word_count = 0;
+	char	*expanded;
 
 	t_token *tmp = tokens;
 	while (tmp) 
@@ -94,7 +96,10 @@ t_cmd *ft_parsing(t_token *tokens, t_list *mini)
 	while (tmp)
 	{
 		if (strncmp(tmp->type, "word", 4) == 0)
-			add_cmds(cmds, tmp->value, index++);
+		{
+				expanded = exp_dollar(tmp->value, tmp->quote_num);
+				add_cmds(cmds, expanded, index++);
+		}
 		if (strncmp(tmp ->type, "rdr", 3) == 0)
 		{
 			rdr_parser(cmds, tmp, rdr_l);
@@ -102,6 +107,5 @@ t_cmd *ft_parsing(t_token *tokens, t_list *mini)
 		}
 		tmp = tmp->next;
 	}
-
 	return cmds;
 }

@@ -90,7 +90,7 @@ void ft_token(char *input, t_token **tokens)
 				{
 					quote = 1;
 					i++; 
-					while (input[i] && input[i] != '\'' && input[i] != '\\')  //tek tırnaklı argümanlar ve komutlar
+					while (input[i] && input[i] != '\'' && input[i] != '\\')
 					{
 						word[len] = input[i];
 						len++;
@@ -130,7 +130,7 @@ void ft_token(char *input, t_token **tokens)
 			quote = 0;
 		}
 	}
-	write_list(*tokens);
+	//write_list(*tokens);
 }
 
 void reset_tokens(t_token *tokens)
