@@ -10,6 +10,7 @@ int ft_cd(char **args, t_list *mini)
     if (chdir(args[1]) != 0)
     {
         printf("No such file or directory\n");
+        exit_code = 1;
         return (1);
     }
     return (0);

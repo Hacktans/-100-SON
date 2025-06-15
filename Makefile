@@ -1,10 +1,11 @@
 CC = cc
-CFLAGS = -Wall -Wextra -Werror
+CFLAGS = -Wall -Wextra -Werror -I.
 DEBUG_FLAGS = -g
 
 NAME = minishell
 
-SRC = minishell.c  utils.c ft_tokenize.c parsing.c ft_reader.c builtins.c quote_chk.c esc_seq.c ft_echo.c dollar_expand.c dollar_utils.c
+SRC = minishell.c  utils.c ft_tokenize.c parsing.c ft_reader.c builtins/builtins.c quote_chk.c esc_seq.c builtins/ft_echo.c  \
+	Dolar_expand/dollar_expand.c Dolar_expand/dollar_utils.c
 OBJ = $(SRC:.c=.o)
 
 LIBFT_DIR = ./libft
