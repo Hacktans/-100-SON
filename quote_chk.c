@@ -54,6 +54,8 @@ int		ft_quote_chk(char *inp)
 	}
 	if(single_num % 2 != 0 || double_num % 2 != 0)
 		return(0);
+	if(inp[i - 1] == '\\')
+		return(0);
 	return(1);
 }
 

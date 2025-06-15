@@ -17,6 +17,7 @@ int exit_code;
 typedef struct s_list
 {
     char **paths;
+    char *input;
     char *path;
     char *home;
     char **exp_cpy;
@@ -27,6 +28,7 @@ typedef struct s_token
     char *value;
     char *type;
     int quote_num;
+    int spc;
     struct s_token *next; 
 } t_token;
 
@@ -36,6 +38,7 @@ typedef struct s_cmd
     char **redirections;
     int pipe_c;
     int rdr_c;
+    int num;
 }   t_cmd;
 
 
@@ -57,7 +60,12 @@ int 	syntax_chk(t_token *tokens, char *input);
 int		ft_quote_chk(char *inp);
 char	*esc_seq(char *inp);
 int char_is_esc(char c) ;
-void    ft_echo(char **strngs);
+void    ft_echo(char **strngs, int quote, char *input);
 char	*exp_dollar(char *str, int quote);
+int		if_has_dollar(char *str);
+int		dollar_num(char *str);
+int     total_len(char *str);
+void	get_exit_code();
+int		spc_chk(char *str);
 
 #endif

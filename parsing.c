@@ -79,9 +79,9 @@ t_cmd *ft_parsing(t_token *tokens, t_list *mini)
 	{
 		if (ft_strncmp(tokens->value, "cd", 2) == 0)
 			flag = 1;
-		if (ft_strcmp(tokens->value, "export") == 0)
+		if (ft_strncmp(tokens->value, "export", 6) == 0)
 			flag = 1;
-		if (ft_strcmp(tokens->value, "unset") == 0)
+		if (ft_strncmp(tokens->value, "unset", 5) == 0)
 			flag = 1;
 		if (!cmd_chk(tokens->value, mini->paths) && flag == 0) 
 		{
@@ -97,14 +97,20 @@ t_cmd *ft_parsing(t_token *tokens, t_list *mini)
 	{
 		if (strncmp(tmp->type, "word", 4) == 0)
 		{
+			if(tmp->quote_num != 1)
+			{
 				expanded = exp_dollar(tmp->value, tmp->quote_num);
 				add_cmds(cmds, expanded, index++);
+			}
+			else
+				add_cmds(cmds, tmp->value, index++);
 		}
 		if (strncmp(tmp ->type, "rdr", 3) == 0)
 		{
 			rdr_parser(cmds, tmp, rdr_l);
 			rdr_l++;
 		}
+		cmds->num = tmp->quote_num;
 		tmp = tmp->next;
 	}
 	return cmds;

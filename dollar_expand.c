@@ -1,82 +1,105 @@
 #include "minishell.h"
 
-int		if_has_dollar(char *str)
+int		pass_env(char *str, int i)
 {
-	int i = 0;
-	while(str[i])
-	{
-		if(str[i] == '$')
-			return(1);
+	if(str[i + 1] == '{')
+		i += 2;
+	else
+		i += 1;
+	while (str[i] && (ft_isalnum(str[i]) || str[i] == '_') && str[i] != '$')
 		i++;
-	}
-	return(0);
+	if(str[i] == '}')
+		i++;
+	return (i);
 }
 
 char	*take_env(char *str, int i)
 {
 	char *tmp;
-	int j;
-	j = ft_strlen(str);
-	tmp = malloc(sizeof(char) * j);
-	j = 0;
-	i += 1;
+	int j = 0;
+	char *value;
+	int len = 0;
+
+	len = pass_env(str, i);
+	tmp = malloc(sizeof(char) * len + 1);
+	if (!tmp)
+		return NULL;
+	if(str[i + 1] == '{')
+		i += 2;
+	else
+		i++;
+	while (str[i] && (ft_isalnum(str[i]) || str[i] == '_') && str[i] != '"' && str[i] != '}')
+		tmp[j++] = str[i++];
+	tmp[j] = '\0';
+	value = getenv(tmp);
+	free(tmp);
+	if (!value)
+		return ft_strdup("");
+	return ft_strdup(value);
+}
+
+char	*esc_chk(char *str)
+{
+	char *tmp;
+	int len;
+	len = ft_strlen(str);
+	int i = 0;
+
+	tmp = malloc(sizeof(char) * len);
+	len = 0;
+	while(str[i])
+	{	
+		if(str[i] == '\\')
+			i++;
+		tmp[len] = str[i];
+		i++;
+		len++;
+	}
+	tmp[len] = '\0';
+	return(tmp);
+}
+
+char *exp_dollar(char *str, int quote)
+{
+    int i = 0;
+	int j = 0;
+	int k = 0;
+    char *tmp;
+    char *tmp2;
+
+	k = total_len(str);
+	tmp = malloc(sizeof(char) * k);
+	k = 0;
+    if (!tmp)
+        return NULL;
+    if (if_has_dollar(str) == 0 || quote == 1)
+        return (str);
+	if(ft_strncmp(str, "$$", 2) == 0 || ft_strncmp(str, "$?", 2) == 0)
+		return(str);
 	while(str[i])
 	{
-		tmp[j] = str[i];
-		i++;
-		j++;
-	}
-	tmp[j] = '\0';
-	tmp = getenv(tmp);
-	if(tmp == NULL)
-		return(ft_strdup(""));
-	return(tmp);
-}
-
-int		pass_env(char *str, int i)
-{
-	i += 1;
-	while (str[i] && (ft_isalnum(str[i]) || str[i] == '_') && str[i] != '$')
-		i++;
-	return (i);
-}
-
-char	*exp_dollar(char *str, int quote)
-{
-	int i = 0;
-	char *tmp;
-	int j = 0;
-	char *res;
-	//int len = 0;
-
-	//len = ft_strlen(str);
-	tmp = malloc(sizeof(char) * 10000);
-	i = 0;
-	if(str[i] == '$' && str[i + 1] == '?')
-		return(str);
-	if(str[i] == '$' && str[i + 1] == '$')
-		return(str);
-	if(if_has_dollar(str) == 0 || quote == 1)
-		return(str);
-	else
-	{
-		while(str[i])
+		if(str[i] == '$' && str[i - 1] == '\\')
 		{
-			if(str[i] == '$')
-			{
-				res = take_env(str, i);
-				tmp = ft_strjoin(tmp, res);
-				j += ft_strlen(res);
-				i = pass_env(str, i);
-			}
-			else
-			{
-				tmp[j] = str[i];
-				i++;
-				j++;
-			}
+			tmp = esc_chk(str);
+			return(tmp);
 		}
-		tmp[j] = '\0';
+		i++;
 	}
-	return(tmp);
+	i = 0;
+    while (str[i])
+    {
+        if (str[i] == '$' && (str[i + 1] != '$' && str[i + 1] != '?') && str[i + 1] != '\0')
+        {
+            tmp2 = take_env(str, i);
+            k = 0;
+            while (tmp2[k])
+                tmp[j++] = tmp2[k++];
+            free(tmp2);
+            i = pass_env(str, i);
+            continue;
+        }
+        tmp[j++] = str[i++];
+    }
+    tmp[j] = '\0';
+    return tmp;
 }

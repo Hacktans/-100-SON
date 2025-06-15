@@ -32,6 +32,23 @@ void 	write_list(t_token *token)
 	}
 }
 
+
+int		spc_chk(char *str)
+{
+	int i = 0;
+	
+	while(str[i] != ' ')
+		i++;
+	i++;
+	while(str[i])
+	{
+		if(str[i] == ' ')
+			return(1);
+		i++;
+	}
+	return(0);
+}
+
 int 	syntax_chk(t_token *tokens, char *input)
 {
 	t_token *tmp = tokens;
@@ -88,6 +105,12 @@ void ft_token(char *input, t_token **tokens)
 			{
 				if (input[i] == '\'')
 				{
+					if (len > 0)
+            		{
+                		word[len] = '\0';
+                		add_token(tokens, word, "word", quote);
+                		len = 0;
+            		}
 					quote = 1;
 					i++; 
 					while (input[i] && input[i] != '\'' && input[i] != '\\')
@@ -101,6 +124,12 @@ void ft_token(char *input, t_token **tokens)
 				}
 				else if(input[i] == '"')
 				{
+					if (len > 0)
+            		{
+                		word[len] = '\0';
+                		add_token(tokens, word, "word", quote);
+                		len = 0;
+            		}
 					quote = 2;
 					i++;
 					while(input[i] && input[i] != '"' && input[i] != '\\')
@@ -114,9 +143,18 @@ void ft_token(char *input, t_token **tokens)
 				}
 				else if(input[i] == '\\' && char_is_esc(input[i + 1]))
 				{
-					word[len] = input[i + 1];
-					len++;
-					i += 2;
+					if(input[i + 1] == '$')
+					{
+						word[len] = input[i];
+						len++;
+						i++;
+					}
+					else
+					{
+						word[len] = input[i + 1];
+						len++;
+						i += 2;
+					}
 				}
 				else
 				{
@@ -125,10 +163,14 @@ void ft_token(char *input, t_token **tokens)
 					i++;
 				}
 			}
-			word[len] = '\0';
-			add_token(tokens, word, "word", quote);
+			if(len > 0)
+			{
+				word[len] = '\0';
+				add_token(tokens, word, "word", quote);
+			}
 			quote = 0;
 		}
+		
 	}
 	//write_list(*tokens);
 }

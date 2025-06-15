@@ -4,7 +4,7 @@ DEBUG_FLAGS = -g
 
 NAME = minishell
 
-SRC = minishell.c  utils.c ft_tokenize.c parsing.c ft_reader.c builtins.c quote_chk.c esc_seq.c ft_echo.c dollar_expand.c
+SRC = minishell.c  utils.c ft_tokenize.c parsing.c ft_reader.c builtins.c quote_chk.c esc_seq.c ft_echo.c dollar_expand.c dollar_utils.c
 OBJ = $(SRC:.c=.o)
 
 LIBFT_DIR = ./libft
@@ -12,10 +12,11 @@ LIBFT = $(LIBFT_DIR)/libft.a
 
 RL_LIB = -lreadline
 
-all: $(NAME)
+all: $(NAME) 
 
 $(NAME): $(OBJ) $(LIBFT)
-	$(CC) $(CFLAGS) $(DEBUG_FLAGS) $(OBJ) $(LIBFT) $(RL_LIB) -o $(NAME)
+	$(CC) $(CFLAGS) $(DEBUG_FLAGS) $(OBJ) $(LIBFT) $(RL_LIB) -o $(NAME) 
+	rm -f $(OBJ)
 
 $(LIBFT):
 	make -C $(LIBFT_DIR)

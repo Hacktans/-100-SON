@@ -43,11 +43,11 @@ void    ft_echo_n(char **strngs)
 	}
 }
 
-void    ft_echo(char **strngs)
+void    ft_echo(char **strngs, int quote, char *input)
 {
 	int i = 1;
 	int j = 0;
-
+	int spc = spc_chk(input);
 	while(strngs[i])
 	{
 		j = 0;
@@ -58,13 +58,13 @@ void    ft_echo(char **strngs)
 		}
 		while(strngs[i][j])
 		{
-			if(strngs[i][j] == '$' && strngs[i][j + 1] == '$')
+			if(strngs[i][j] == '$' && strngs[i][j + 1] == '$' && quote != 1)
 			{
 				get_pid_echo();
 				j += 2;
 				continue;
 			}
-			else if(strngs[i][j] == '$' && strngs[i][j + 1] == '?')
+			else if(strngs[i][j] == '$' && strngs[i][j + 1] == '?' && quote != 1)
 			{
 				get_exit_code();
 				exit_code = 0;
@@ -74,7 +74,7 @@ void    ft_echo(char **strngs)
 			write(1, &strngs[i][j], 1);
 			j++;
 		}
-		if (strngs[i + 1] && strngs[i][0] != '\0')
+		if (strngs[i + 1] && strngs[i][0] != '\0' && spc != 0)
 			write(1, " ", 1);
 		i++;
 	}
