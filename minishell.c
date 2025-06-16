@@ -17,6 +17,8 @@ int main(int ac, char **av, char **env)
 	while (1)
 	{
 		mini->input = readline("minishell$ ");
+		if(mini->input[0] == '\0')
+			continue;
 		ft_exit_chk(mini, mini->input);
 		add_history(mini->input);
 		ft_token(mini->input, &tokens);

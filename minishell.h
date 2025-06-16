@@ -42,7 +42,7 @@ typedef struct s_cmd
 }   t_cmd;
 
 
-int ft_cd(char **args, t_list *mini);
+void ft_cd(char **args);
 int ft_exp(char **env, t_cmd *input);
 int ft_unset(char **env, char *name);
 void ft_pipe(t_list *mini, char *input, char **env);
@@ -67,5 +67,6 @@ int		dollar_num(char *str);
 int     total_len(char *str);
 void	get_exit_code();
 int		spc_chk(char *str);
+void    ft_pwd();
 
 #endif
